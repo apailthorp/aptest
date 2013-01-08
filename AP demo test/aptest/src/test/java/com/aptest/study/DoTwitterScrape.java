@@ -15,7 +15,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 //@Listeners({ com.aptest.study.TestMailSender.class})
-public class TwitterScrape {
+public class DoTwitterScrape {
 
 	WebDriver selenium;
 
