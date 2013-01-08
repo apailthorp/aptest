@@ -20,21 +20,21 @@ public class DoTwitterScrape {
 	WebDriver selenium;
 
 	static String myOs;
-//	Logger log = Logger.getLogger(this.getClass());
 
 	static final boolean logToConsole = true;
 
-	public String sauceUserName;
-	String sauceAccessKey;
-
+	// Extended RemoteWebDriver includes some utility methods
 	SpecialSauceWebDriver localSSWebDriver;
 
+	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();
+
+	// Available for use after test method has completed
 	public String sauceSessionName;
 	public String testName;
 	public String build;
 	public String emailName;
-	public String email;
+	public String emailSendFlag;
 	public String url;
 	public String userName;
 	public String userPassword;
@@ -42,43 +42,32 @@ public class DoTwitterScrape {
 	public String targetBrowser;
 	public String targetPlatform;
 	public String targetBrowserVersion;
+	public String targetDescription;
 	public String fileScreenCapture;
-	public String targetMessageString;
 	Boolean testPassStatus = false;
 
-	@Parameters({ "sauceUsername", "sauceAccessKey", "testName", "build",
-		"notifyEmail", "sendEmail", "url", "userName", "userPassword" })
+	@Parameters({"testName", "build", "notifyEmail"})
 	@BeforeSuite(alwaysRun = true)
-	public void startUp(String inSauceUserName, String inSauceAccessKey,
-		String inTestName, String inBuild, String inNotifyEmail,
-		String inSendEmail, String inUrl, 
-		String inUserName, String inUserPassword) throws Exception {
+	public void startUp(String inTestName, String inBuild, String inNotifyEmail)
+	{
+		// set class level values for later use
+		testName = inTestName;
+		build = inBuild;
+		emailName = inNotifyEmail;
 
-	// Move local input strings to class level variables
-	sauceUserName = inSauceUserName;
-	sauceAccessKey = inSauceAccessKey;
-	testName = inTestName;
-	build = inBuild;
-	emailName = inNotifyEmail;
-	email = inSendEmail;
-	url = inUrl;
-	userName = inUserName;
-	userPassword = inUserPassword;
-	
-	// Output the OS the test is running on
-	myOs = System.getProperty("os.name");
-	Reporter.log("Automation host OS is " + myOs +", Build is " + build, true);
+		// Output the OS, name of test, and build running
+		myOs = System.getProperty("os.name");
+		Reporter.log("Automation host OS is " + myOs +", Test is " + inTestName + " Build is " + inBuild, true);
 
-	// Generate the message
-	/* create email from utility class with address, subject line, message content */
-	testMailer.makeEmail(emailName, "Build: " + build
-			+ " suite results", "");
-
+		// Generate the notify message
+		/* create email from utility class with address, subject line */
+		testMailer.makeEmail(inNotifyEmail, "Test: " + inTestName + " Build: " + inBuild
+				+ " suite results", "");
 	}
-	
+
 	@Parameters({ "sauceUsername", "sauceAccessKey", "testName", "build",
-			"notifyEmail", "sendEmail", "url", "userName", "userPassword",
-			"browser", "platform", "browserVersion" })
+		"notifyEmail", "sendEmail", "url", "userName", "userPassword",
+		"browser", "platform", "browserVersion" })
 	@BeforeTest(alwaysRun = true)
 	public void setUp(String inSauceUserName, String inSauceAccessKey,
 			String inTestName, String inBuild, String inNotifyEmail,
@@ -87,28 +76,26 @@ public class DoTwitterScrape {
 			String inBrowserVersion) throws Exception {
 
 		// Move local input strings to class level variables
-		sauceUserName = inSauceUserName;
-		sauceAccessKey = inSauceAccessKey;
 		testName = inTestName;
 		build = inBuild;
 		emailName = inNotifyEmail;
-		email = inSendEmail;
 		url = inUrl;
 		userName = inUserName;
 		userPassword = inUserPassword;
 		targetBrowser = inBrowser;
 		targetPlatform = inPlatform;
 		targetBrowserVersion = inBrowserVersion;
+		targetDescription = targetBrowser + " " + targetBrowserVersion + " on " + targetPlatform;
 		fileScreenCapture = "Screenshot_" + targetBrowser + "_"
 				+ targetBrowserVersion + "_" + targetPlatform + ".PNG";
-		targetMessageString = targetBrowser + " " + targetBrowserVersion + " on " + targetPlatform;
 
+		// Get the RemoteWebDriver with the custom extensions
 		localSSWebDriver = new SpecialSauceWebDriver();
+		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
 
-		// Set the name of the test and the initial pass status on the Sauce
-		// Labs server
+		// Set the name of the test and the build on the Sauce Labs server
 		localSSWebDriver.setTestName(testName);
 		localSSWebDriver.setBuild(build);
 	}
@@ -116,9 +103,15 @@ public class DoTwitterScrape {
 	@Test
 	public void doTest() throws InterruptedException {
 
+		// Output some progress, compose email message start
 		Reporter.log("Build: " + build, logToConsole);
-		String emailMessage = "starting " + targetMessageString + "\n";
+		String emailMessage = "starting " + targetDescription + "\n";
+		emailMessage += "Build: " + build + "\n " + targetDescription 
+				+ "\n URL: " + url + "\n Login: " + userName
+				+ "\n";
+		testMailer.addText(emailMessage);
 
+		// Open the web site under test
 		selenium.get(url);
 
 		// Get logged in, test for reCaptcha failure
@@ -127,22 +120,19 @@ public class DoTwitterScrape {
 		if (!(loginTry)) {
 			Boolean captchaFound = screenLogin.isCaptchaSeen();
 			if (captchaFound) {
-				testMailer.addText(targetMessageString + ": Failure during login, reCaptcha found \n");
+				testMailer.addText(targetDescription + ": Failure during login, reCaptcha found \n");
 				Reporter.log("Failure during login, reCaptcha found", logToConsole);
 			}
 		}
 		Assert.assertTrue(loginTry, "Failure during login, reCaptcha found");
 
+		// Scrape twitter streams from landing page
 		TwitterStreams someStreams = new TwitterStreams(selenium);
-		emailMessage += "Build: " + build + "\n " + targetMessageString 
-				+ "\n URL: " + url + "\n Login: " + userName
-				+ "\n";
-
 		ArrayList<Map<String, String>> someStreamMaps = new ArrayList<Map<String, String>>();
 		Assert.assertTrue(someStreams.getStreamMapList(someStreamMaps));
 
+		// Output scraped text to log
 		Reporter.log("\n", logToConsole);
-//		emailMessage += "\n";
 		for (Map<String, String> someMap : someStreamMaps) {
 			// Reverse the order of the map
 			for (int i = someMap.keySet().size() - 1; i >= 0; i--) {
@@ -152,9 +142,8 @@ public class DoTwitterScrape {
 			}
 			Reporter.log("\n", logToConsole);
 		}
-		
-		testMailer.addText(emailMessage);
 
+		// Testing is done
 		testPassStatus = true;
 		localSSWebDriver.setTestPass();
 
@@ -170,9 +159,11 @@ public class DoTwitterScrape {
 				fileScreenCapture);
 		testMailer.addText(fileScreenCapture + " attached \n");
 
-		if (!(testPassStatus))
+		if (!(testPassStatus)) {
 			localSSWebDriver.setTestFail();
-		else testMailer.addText(targetMessageString + " finished successfully \n");
+			testMailer.addText("Failure recorded for " + targetDescription + "\n");
+		}
+		else testMailer.addText(targetDescription + " finished successfully \n");
 
 		selenium.quit();
 	}
@@ -181,6 +172,7 @@ public class DoTwitterScrape {
 	public void cleanupSuite() {
 		Reporter.log("ending suite", logToConsole);
 		testMailer.addText("ending suite");
+		// email will be sent by a listener
 	}
 
 }

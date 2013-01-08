@@ -21,6 +21,7 @@ public class TestEmailReporterSender extends EmailableReporter{
 
 		/* add file to the email with build referencing name, then send the email */
 		testMailer.attachFile(resultsFile,"build_" + someBuildIdAsParameter + "_emailable-report.html");
-		testMailer.sendEmail();
+		if (arg1.get(0).getParameter("sendEmail").equalsIgnoreCase("true"))
+			testMailer.sendEmail();
 	}
 }

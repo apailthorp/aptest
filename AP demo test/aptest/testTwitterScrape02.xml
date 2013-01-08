@@ -8,16 +8,14 @@
 		<listener class-name="com.aptest.study.TestEmailReporterSender" />
 	</listeners>
 	<parameter name="sauceUsername" value="apailthorp" />
-	<parameter name="sauceAccessKey" value="fa8b9a82-c29c-4714-acb1-b2213d7f1234" />
-	<parameter name="sauceUsername" value="fabrictest" />
-	<parameter name="sauceAccessKey" value="3c9772cd-4cb2-4c8d-b690-2a28fe8c6a2e" />
+	<parameter name="sauceAccessKey" value="XXX" />
 	<parameter name="testName" value="testTweetScrape02" />
-	<parameter name="build" value="test-1363" />
+	<parameter name="build" value="test-1372" />
 	<parameter name="notifyEmail" value="apailthorp@msn.com" />
 	<parameter name="sendEmail" value="true" />
 	<parameter name="url" value="http://twitter.com" />
 	<parameter name="userName" value="apailthorp@msn.com" />
-	<parameter name="userPassword" value="AutoTest123!" />
+	<parameter name="userPassword" value="XXX" />
 
 	<test verbose="2"
 		name="Test Twitter screen scrape using IE 8 on Windows 2003"

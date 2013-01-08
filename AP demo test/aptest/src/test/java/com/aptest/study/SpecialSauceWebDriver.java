@@ -105,7 +105,6 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 			throw new RuntimeException(e);
 		}            
 
-		//TODO: Make some validation logic for this return
 		return true;
 	}
 	
