@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite verbose="2" name="User type suite" parallel="tests"
+	thread-count="7">
+	<!-- Parameters for all tests -->
+	<listeners>
+		<listener class-name="com.aptest.study.TestEmailReporterSender" />
+	</listeners>
+	<parameter name="sauceUsername" value="fabrictest" />
+	<parameter name="sauceAccessKey" value="accf40c4-7121-4a71-a155-c410c2dd38f3" />
+	<parameter name="testName" value="checkSeConf2013" />
+	<parameter name="build" value="check-1380" />
+	<parameter name="notifyEmail" value="apailthorp@msn.com" />
+	<parameter name="sendEmail" value="true" />
+	<parameter name="url" value="http://www.seleniumconf.org/venue/" />
+
+	<test verbose="2"
+		name="Test Twitter screen scrape using Chrome on Windows 2008"
+		preserve-order="true">
+		<parameter name="platform" value="Windows 2003" />
+		<parameter name="browser" value="firefox" />
+		<parameter name="browserVersion" value="17" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+</suite>
