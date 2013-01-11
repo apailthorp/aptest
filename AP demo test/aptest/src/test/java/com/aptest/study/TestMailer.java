@@ -166,4 +166,11 @@ public class TestMailer {
 
 	}
 
+	public void setSubject(String inText) throws MessagingException {
+		TestMailer.message.setSubject(inText);
+	}
+	
+	public String getSubject() throws MessagingException {
+		return TestMailer.message.getSubject();
+	}
 }

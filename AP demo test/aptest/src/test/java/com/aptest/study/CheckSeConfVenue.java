@@ -2,6 +2,8 @@ package com.aptest.study;
 
 import java.io.File;
 
+import javax.mail.MessagingException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,6 +24,7 @@ public class CheckSeConfVenue {
 	static String myOs;
 
 	static final boolean logToConsole = true;
+	static boolean allPassing = false;
 
 	// Extended RemoteWebDriver includes some utility methods
 	SpecialSauceWebDriver localSSWebDriver;
@@ -141,14 +144,19 @@ public class CheckSeConfVenue {
 			testMailer.addText("Failure recorded for " + targetDescription + "\n");
 		}
 		else testMailer.addText(targetDescription + " finished successfully \n");
-
+		allPassing = (allPassing & testPassStatus);
 		selenium.quit();
 	}
 
 	@AfterSuite(alwaysRun = true)
-	public void cleanupSuite() {
+	public void cleanupSuite() throws MessagingException {
 		Reporter.log("ending suite", logToConsole);
 		testMailer.addText("ending suite");
+		if (!(allPassing)) {
+			testMailer.setSubject("Failure in " + testMailer.getSubject());
+		}
+		else testMailer.setSubject("Passing in " + testMailer.getSubject());
+
 		// email will be sent by a listener
 	}
 

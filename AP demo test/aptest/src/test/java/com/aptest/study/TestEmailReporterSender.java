@@ -15,7 +15,7 @@ public class TestEmailReporterSender extends EmailableReporter{
 
 		super.generateReport(arg0, arg1, arg2);
 
-		/* fetch the hopefully completed default report */
+		/* fetch the completed default report */
 	    File resultsFile = new File(arg2 + "\\emailable-report.html");
 		String someBuildIdAsParameter = arg1.get(0).getParameter("build");
 

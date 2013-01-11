@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.Reporter;
@@ -22,6 +24,7 @@ public class DoTwitterScrape {
 	static String myOs;
 
 	static final boolean logToConsole = true;
+	static boolean allPassing = false;
 
 	// Extended RemoteWebDriver includes some utility methods
 	SpecialSauceWebDriver localSSWebDriver;
@@ -164,15 +167,19 @@ public class DoTwitterScrape {
 			testMailer.addText("Failure recorded for " + targetDescription + "\n");
 		}
 		else testMailer.addText(targetDescription + " finished successfully \n");
-
+		allPassing = (allPassing & testPassStatus);
 		selenium.quit();
 	}
 
 	@AfterSuite(alwaysRun = true)
-	public void cleanupSuite() {
+	public void cleanupSuite() throws MessagingException {
 		Reporter.log("ending suite", logToConsole);
 		testMailer.addText("ending suite");
+		if (!(allPassing)) {
+			testMailer.setSubject("Failure in " + testMailer.getSubject());
+		}
+		else testMailer.setSubject("Passing in " + testMailer.getSubject());
+
 		// email will be sent by a listener
 	}
-
 }
