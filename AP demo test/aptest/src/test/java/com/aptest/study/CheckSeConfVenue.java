@@ -111,7 +111,7 @@ public class CheckSeConfVenue {
 		testMailer.addText(emailMessage);
 
 		// Open the web site under test
-		selenium.get("http://www.seleniumconf.org/venue/");
+		selenium.get(url);
 		// Grab some text containing elements
 		List<WebElement> someElements = selenium.findElements(By.cssSelector(".box_right p"));
 		// Find one that has the word "link"
