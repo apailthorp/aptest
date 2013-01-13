@@ -20,7 +20,7 @@ public class TwitterStreams {
 
 	public Boolean getStreamMapList(ArrayList<Map<String, String>> someStreamMaps) {
 
-		targetElements = this.driver.findElements(By.cssSelector("div.stream-item"));
+		targetElements = this.driver.findElements(By.cssSelector("li.stream-item"));
 
 		for (WebElement someElement : targetElements) {
 			String[] someStreamStrings = someElement.getText().split("\n");

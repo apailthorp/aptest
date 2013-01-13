@@ -17,36 +17,30 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.saucelabs.saucerest.SauceREST;
 
-public class SpecialSauceWebDriver extends RemoteWebDriver {
-	
-	private static String sauceUser;
-	private static String sauceAccessKey;
+public class LocalWebDriver extends RemoteWebDriver {
+
 	private WebDriver driver;
 	private WebDriver augmentedDriver;
-	private SauceREST sauceWebDriverREST;
-	private Map<String, Object>mapSauceJob = new HashMap<String, Object>();
-	private String sauceJobID;
-	
+
 	public WebDriver getSelenium(String inSauceUser, String inSauceAccessKey, 
 			String browser, String platform, String browserVersion
 			)
 					throws InterruptedException, MalformedURLException {
 
-		sauceUser = inSauceUser;
-		sauceAccessKey = inSauceAccessKey;
-		sauceWebDriverREST = getSauceREST(sauceUser, sauceAccessKey);
+		File file = new File("C:\\Program Files\\Selenium\\IEDriverServer.exe");
+		System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
 
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc = getCapabilities(browser, browserVersion, platform);
-		dc = getCapabilities(browser, null, platform);
 
 		driver = new RemoteWebDriver(
 				new URL(
-						"http://" +  sauceUser + ":" + sauceAccessKey + "@ondemand.saucelabs.com:80/wd/hub"),
+						"http://localhost:4444/wd/hub"),
 						dc);
+
 		augmentedDriver = new Augmenter().augment(driver);
-		
-		sauceJobID = getJobID(driver);
+
+		//		sauceJobID = getJobID(driver);
 		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
 
 		return driver;
@@ -62,7 +56,7 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 		}
 		else if (browser.equalsIgnoreCase("chrome")){
 			capabilities = DesiredCapabilities.chrome();
-		
+
 		}
 		else if (browser.equalsIgnoreCase("firefox")){
 			capabilities = DesiredCapabilities.firefox();
@@ -76,7 +70,7 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 			capabilities = DesiredCapabilities.iphone();
 		}
 
-	if (browserVersion != "" ){ 
+		if (browserVersion != "" ){ 
 			capabilities.setCapability("version", browserVersion);
 		}
 
@@ -87,55 +81,26 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 	}
 
 	public String getJobID(WebDriver inDriver) {
-		
-		return ((RemoteWebDriver)inDriver).getSessionId().toString();
+		return null;
 	}
 
-	public SauceREST getSauceREST(String inSauceUserName, String inSauceAccessKey) {
-		return new SauceREST(inSauceUserName, inSauceAccessKey);
-	}
-	
 	public Boolean setTestName(String name){
-		
-		// Using REST call, set the name of the test and the initial pass status on the Sauce Labs server
-		mapSauceJob.put("name", name);
-		try {
-			sauceWebDriverREST.updateJobInfo(sauceJobID, mapSauceJob);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}            
-
 		return true;
 	}
-	
-	public void setBuild(String inBuild){
 
-		mapSauceJob.put("build", inBuild);
-		try {
-			sauceWebDriverREST.updateJobInfo(sauceJobID, mapSauceJob);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}            
+	public void setBuild(String inBuild){
+		return;
 	}
-	
+
 	public void setTestPass(){
-		try {
-			sauceWebDriverREST.jobPassed(sauceJobID);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return;
 	}
-	
+
 	public void setTestFail(){
-		try {
-			sauceWebDriverREST.jobFailed(sauceJobID);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return;
 	}
-	
+
 	public File getScreenshot(){
-		
 		return ((TakesScreenshot)augmentedDriver).
 				getScreenshotAs(OutputType.FILE);
 	}

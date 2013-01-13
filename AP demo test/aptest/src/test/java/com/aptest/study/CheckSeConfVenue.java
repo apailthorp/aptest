@@ -24,10 +24,10 @@ public class CheckSeConfVenue {
 	static String myOs;
 
 	static final boolean logToConsole = true;
-	static boolean allPassing = false;
+	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-	SpecialSauceWebDriver localSSWebDriver;
+	LocalWebDriver localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();
@@ -88,7 +88,7 @@ public class CheckSeConfVenue {
 				+ targetBrowserVersion + "_" + targetPlatform + ".PNG";
 
 		// Get the RemoteWebDriver with the custom extensions
-		localSSWebDriver = new SpecialSauceWebDriver();
+		localSSWebDriver = new LocalWebDriver();
 		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
@@ -131,7 +131,8 @@ public class CheckSeConfVenue {
 
 	@AfterTest(alwaysRun = true)
 	public void cleanupTest() {
-		// Grab a screen capture
+		// Maximize the screen and grab a screen capture
+		selenium.manage().window().maximize();
 		File screenshot = localSSWebDriver.getScreenshot();
 
 		// Attach the screen capture to the email
@@ -152,6 +153,7 @@ public class CheckSeConfVenue {
 	public void cleanupSuite() throws MessagingException {
 		Reporter.log("ending suite", logToConsole);
 		testMailer.addText("ending suite");
+		allPassing = (allPassing & testPassStatus);
 		if (!(allPassing)) {
 			testMailer.setSubject("Failure in " + testMailer.getSubject());
 		}

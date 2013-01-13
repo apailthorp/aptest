@@ -10,17 +10,30 @@
 	<parameter name="sauceUsername" value="fabrictest" />
 	<parameter name="sauceAccessKey" value="accf40c4-7121-4a71-a155-c410c2dd38f3" />
 	<parameter name="testName" value="checkSeConf2013" />
-	<parameter name="build" value="check-1380" />
+	<parameter name="build" value="check-1381" />
 	<parameter name="notifyEmail" value="apailthorp@msn.com" />
 	<parameter name="sendEmail" value="true" />
 	<parameter name="url" value="http://www.seleniumconf.org/venue/" />
 
 	<test verbose="2"
-		name="Test Twitter screen scrape using Chrome on Windows 2008"
+		name="Selenium Conference Venue screen scrape using Firefox 19 on Windows"
 		preserve-order="true">
-		<parameter name="platform" value="Windows 2003" />
+		<parameter name="platform" value="WINDOWS" />
 		<parameter name="browser" value="firefox" />
-		<parameter name="browserVersion" value="17" />
+		<parameter name="browserVersion" value="19" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+	<test verbose="2"
+		name="Selenium Conference Venue screen scrape using IE 9 on Windows"
+		preserve-order="true">
+		<parameter name="platform" value="WINDOWS" />
+		<parameter name="browser" value="internet explorer" />
+		<parameter name="browserVersion" value="9" />
 		<classes>
 			<class name="com.aptest.study.CheckSeConfVenue" />
 			<methods>

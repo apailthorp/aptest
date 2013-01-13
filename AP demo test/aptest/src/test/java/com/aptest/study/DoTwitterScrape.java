@@ -24,7 +24,7 @@ public class DoTwitterScrape {
 	static String myOs;
 
 	static final boolean logToConsole = true;
-	static boolean allPassing = false;
+	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
 	SpecialSauceWebDriver localSSWebDriver;
@@ -132,7 +132,7 @@ public class DoTwitterScrape {
 		// Scrape twitter streams from landing page
 		TwitterStreams someStreams = new TwitterStreams(selenium);
 		ArrayList<Map<String, String>> someStreamMaps = new ArrayList<Map<String, String>>();
-		Assert.assertTrue(someStreams.getStreamMapList(someStreamMaps));
+		Assert.assertTrue(someStreams.getStreamMapList(someStreamMaps), "Failure for getStreamMapList");
 
 		// Output scraped text to log
 		Reporter.log("\n", logToConsole);
@@ -154,7 +154,8 @@ public class DoTwitterScrape {
 
 	@AfterTest(alwaysRun = true)
 	public void cleanupTest() {
-		// Grab a screen capture
+		// Maximize the screen and grab a screen capture
+		selenium.manage().window().maximize();
 		File screenshot = localSSWebDriver.getScreenshot();
 
 		// Attach the screen capture to the email
