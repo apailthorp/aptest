@@ -22,9 +22,9 @@ public class LocalWebDriver extends RemoteWebDriver {
 			)
 					throws InterruptedException, MalformedURLException {
 
-		File file = new File("C:\\Program Files\\Selenium\\IEDriverServer.exe");
-		System.setProperty("webdriver.ie.driver", file.getAbsolutePath());
-
+		File fileIe = new File("C:\\Program Files\\Selenium\\IEDriverServer.exe");
+		System.setProperty("webdriver.ie.driver", fileIe.getAbsolutePath());
+		
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc = getCapabilities(browser, browserVersion, platform);
 

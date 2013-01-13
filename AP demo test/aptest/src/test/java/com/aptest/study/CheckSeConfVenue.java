@@ -1,6 +1,7 @@
 package com.aptest.study;
 
 import java.io.File;
+import java.util.List;
 
 import javax.mail.MessagingException;
 
@@ -110,19 +111,26 @@ public class CheckSeConfVenue {
 		testMailer.addText(emailMessage);
 
 		// Open the web site under test
-		selenium.get(url);
-		// Grab some text containing element
-		WebElement localSSElement = selenium.findElements(By.cssSelector("p:nth-child(4)")).get(0);
-
+		selenium.get("http://www.seleniumconf.org/venue/");
+		// Grab some text containing elements
+		List<WebElement> someElements = selenium.findElements(By.cssSelector(".box_right p"));
+		// Find one that has the word "link"
+		String someText = null;
+		for (WebElement someElement : someElements){
+			Reporter.log("Element: " + someElement.toString(), true);
+			Reporter.log("Attribute(Value): " + someElement.getAttribute("Value"), true);
+			Reporter.log("Value: " + someElement.getCssValue("p"), true);
+			Reporter.log("Text: " + someElement.getText(), true);
+			someText = someElement.getText();
+			if (someText != null) if (someText.contains("link")) break;
+		}
 		testMailer.addText("Found text:");
-		Reporter.log("Found text", logToConsole);
-		String someText = localSSElement.getText();
 		testMailer.addText(someText + " \n");
+		Reporter.log("Found text", logToConsole);
 		Reporter.log(someText, logToConsole);
 		Assert.assertTrue((someText.contentEquals("We will provide a special registration link" +
 				" for booking in the next couple of weeks.")), 
 				"Message changed\n");
-		
 		// Testing is done
 		testPassStatus = true;
 		localSSWebDriver.setTestPass();
