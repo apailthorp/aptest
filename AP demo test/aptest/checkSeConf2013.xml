@@ -10,7 +10,7 @@
 	<parameter name="sauceUsername" value="XXX" />
 	<parameter name="sauceAccessKey" value="XXX" />
 	<parameter name="testName" value="checkSeConf2013" />
-	<parameter name="build" value="check-1392" />
+	<parameter name="build" value="check-1398" />
 	<parameter name="notifyEmail" value="apailthorp@msn.com" />
 	<parameter name="sendEmail" value="true" />
 	<parameter name="url" value="http://www.seleniumconf.org/venue/" />
@@ -28,7 +28,7 @@
 			</methods>
 		</classes>
 	</test>
-		<test verbose="2"
+	<test verbose="2"
 		name="Selenium Conference Venue screen scrape using IE 9 on Windows"
 		preserve-order="true">
 		<parameter name="webDriverType" value="local" />
@@ -42,7 +42,7 @@
 			</methods>
 		</classes>
 	</test>
-		<test verbose="2"
+	<test verbose="2"
 		name="Selenium Conference Venue screen scrape using Chrome on Windows"
 		preserve-order="true">
 		<parameter name="webDriverType" value="local" />
@@ -57,7 +57,7 @@
 		</classes>
 	</test>
 	<test verbose="2"
-		name="Test Twitter screen scrape using IE 8 on Windows 2003"
+		name="Selenium Conference Venue screen scrape using IE 8 on Windows 2003"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2003" />
@@ -70,8 +70,8 @@
 			</methods>
 		</classes>
 	</test>
-		<test verbose="2"
-		name="Test Twitter screen scrape using IE 9 on Windows 2008"
+	<test verbose="2"
+		name="Selenium Conference Venue screen scrape using IE 9 on Windows 2008"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2008" />
@@ -85,7 +85,7 @@
 		</classes>
 	</test>
 	<test verbose="2"
-		name="Test Twitter screen scrape using IE 10 on Windows 2012"
+		name="Selenium Conference Venue screen scrape using IE 10 on Windows 2012"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2012" />
@@ -99,7 +99,7 @@
 		</classes>
 	</test>
 	<test verbose="2"
-		name="Test Twitter screen scrape using Firefox 16 on Windows 2003"
+		name="Selenium Conference Venue screen scrape using Firefox 16 on Windows 2003"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2003" />
@@ -113,7 +113,7 @@
 		</classes>
 	</test>
 	<test verbose="2"
-		name="Test Twitter screen scrape using Chrome on Windows 2008"
+		name="Selenium Conference Venue screen scrape using Chrome on Windows 2008"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2008" />
@@ -126,8 +126,8 @@
 			</methods>
 		</classes>
 	</test>
- 	<test verbose="2"
-		name="Test Twitter screen scrape using Firefox 17 on Windows 2012"
+	<test verbose="2"
+		name="Selenium Conference Venue screen scrape using Firefox 17 on Windows 2012"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2012" />
@@ -141,7 +141,7 @@
 		</classes>
 	</test>
 	<test verbose="2"
-		name="Test Twitter screen scrape using Chrome on Windows 2003"
+		name="Selenium Conference Venue screen scrape using Chrome on Windows 2003"
 		preserve-order="true">
 		<parameter name="webDriverType" value="sauce" />
 		<parameter name="platform" value="Windows 2003" />
@@ -154,4 +154,4 @@
 			</methods>
 		</classes>
 	</test>
- </suite>
+</suite>
