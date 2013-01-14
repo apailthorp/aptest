@@ -4,7 +4,7 @@ public class LocalSSWebDriverFactory {
 
 	public static LocalSSWebDriverInterface getLocalSSWebDriver(String selection){
 		if (selection.equalsIgnoreCase("local")) {
-			return new LocalWebDriver();
+			return new LocalSSWebDriver();
 		}
 		else if (selection.equalsIgnoreCase("sauce")) {
 			return new SpecialSauceWebDriver();
