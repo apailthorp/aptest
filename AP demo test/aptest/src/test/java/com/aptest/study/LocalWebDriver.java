@@ -12,10 +12,10 @@ import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class LocalWebDriver extends RemoteWebDriver {
+public class LocalWebDriver extends RemoteWebDriver implements LocalSSWebDriverInterface {
 
 	private WebDriver driver;
-	private WebDriver augmentedDriver;
+	public WebDriver augmentedDriver;
 
 	public WebDriver getSelenium(String inSauceUser, String inSauceAccessKey, 
 			String browser, String platform, String browserVersion
@@ -35,7 +35,6 @@ public class LocalWebDriver extends RemoteWebDriver {
 
 		augmentedDriver = new Augmenter().augment(driver);
 
-		//		sauceJobID = getJobID(driver);
 		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
 
 		return driver;
@@ -76,11 +75,11 @@ public class LocalWebDriver extends RemoteWebDriver {
 	}
 
 	public String getJobID(WebDriver inDriver) {
-		return null;
+		return ((RemoteWebDriver)inDriver).getSessionId().toString();
 	}
 
-	public Boolean setTestName(String name){
-		return true;
+	public void setTestName(String name){
+		return;
 	}
 
 	public void setBuild(String inBuild){
@@ -99,4 +98,9 @@ public class LocalWebDriver extends RemoteWebDriver {
 		return ((TakesScreenshot)augmentedDriver).
 				getScreenshotAs(OutputType.FILE);
 	}
+
+	public void maximizeWindow() {
+		driver.manage().window().maximize();
+	}
+
 }

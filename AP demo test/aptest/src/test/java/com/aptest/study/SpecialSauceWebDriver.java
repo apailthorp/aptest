@@ -17,12 +17,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.saucelabs.saucerest.SauceREST;
 
-public class SpecialSauceWebDriver extends RemoteWebDriver {
+public class SpecialSauceWebDriver extends RemoteWebDriver implements LocalSSWebDriverInterface {
 	
 	private static String sauceUser;
 	private static String sauceAccessKey;
-	private WebDriver driver;
 	private WebDriver augmentedDriver;
+	private WebDriver driver;
 	private SauceREST sauceWebDriverREST;
 	private Map<String, Object>mapSauceJob = new HashMap<String, Object>();
 	private String sauceJobID;
@@ -53,7 +53,7 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 
 	}
 
-	public static DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
+	public DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
 
 		DesiredCapabilities capabilities = null;
 
@@ -62,7 +62,7 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 		}
 		else if (browser.equalsIgnoreCase("chrome")){
 			capabilities = DesiredCapabilities.chrome();
-		
+
 		}
 		else if (browser.equalsIgnoreCase("firefox")){
 			capabilities = DesiredCapabilities.firefox();
@@ -76,7 +76,7 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 			capabilities = DesiredCapabilities.iphone();
 		}
 
-	if (browserVersion != "" ){ 
+		if (browserVersion != "" ){ 
 			capabilities.setCapability("version", browserVersion);
 		}
 
@@ -86,17 +86,15 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 
 	}
 
-	public String getJobID(WebDriver inDriver) {
-		
-		return ((RemoteWebDriver)inDriver).getSessionId().toString();
-	}
-
-	public SauceREST getSauceREST(String inSauceUserName, String inSauceAccessKey) {
+	private SauceREST getSauceREST(String inSauceUserName, String inSauceAccessKey) {
 		return new SauceREST(inSauceUserName, inSauceAccessKey);
 	}
 	
-	public Boolean setTestName(String name){
-		
+	public String getJobID(WebDriver inDriver) {
+		return ((RemoteWebDriver)inDriver).getSessionId().toString();
+	}
+
+	public void setTestName(String name){
 		// Using REST call, set the name of the test and the initial pass status on the Sauce Labs server
 		mapSauceJob.put("name", name);
 		try {
@@ -104,12 +102,9 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}            
-
-		return true;
 	}
 	
 	public void setBuild(String inBuild){
-
 		mapSauceJob.put("build", inBuild);
 		try {
 			sauceWebDriverREST.updateJobInfo(sauceJobID, mapSauceJob);
@@ -133,10 +128,13 @@ public class SpecialSauceWebDriver extends RemoteWebDriver {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public File getScreenshot(){
-		
 		return ((TakesScreenshot)augmentedDriver).
 				getScreenshotAs(OutputType.FILE);
+	}
+
+	public void maximizeWindow() {
+		return;
 	}
 }

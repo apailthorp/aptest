@@ -28,7 +28,7 @@ public class CheckSeConfVenue {
 	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-	LocalWebDriver localSSWebDriver;
+	LocalSSWebDriverInterface localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();
@@ -68,13 +68,16 @@ public class CheckSeConfVenue {
 	}
 
 	@Parameters({ "sauceUsername", "sauceAccessKey", "testName", "build",
-		"notifyEmail", "sendEmail", "url", 
+		"notifyEmail", "sendEmail", "url",
+		"webDriverType", 
 		"browser", "platform", "browserVersion" })
 	@BeforeTest(alwaysRun = true)
 	public void setUp(String inSauceUserName, String inSauceAccessKey,
-			String inTestName, String inBuild, String inNotifyEmail,
-			String inSendEmail, String inUrl, String inBrowser, String inPlatform,
-			String inBrowserVersion) throws Exception {
+			String inTestName, String inBuild, 
+			String inNotifyEmail, String inSendEmail, String inUrl,
+			String inWebDriverType,
+			String inBrowser, String inPlatform, String inBrowserVersion) 
+					throws Exception {
 
 		// Move local input strings to class level variables
 		testName = inTestName;
@@ -89,7 +92,7 @@ public class CheckSeConfVenue {
 				+ targetBrowserVersion + "_" + targetPlatform + ".PNG";
 
 		// Get the RemoteWebDriver with the custom extensions
-		localSSWebDriver = new LocalWebDriver();
+		localSSWebDriver = LocalSSWebDriverFactory.getLocalSSWebDriver(inWebDriverType);
 		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
@@ -113,20 +116,18 @@ public class CheckSeConfVenue {
 		// Open the web site under test
 		selenium.get(url);
 		// Grab some text containing elements
+		localSSWebDriver.maximizeWindow();
 		List<WebElement> someElements = selenium.findElements(By.cssSelector(".box_right p"));
 		// Find one that has the word "link"
 		String someText = null;
 		for (WebElement someElement : someElements){
-			Reporter.log("Element: " + someElement.toString(), true);
-			Reporter.log("Attribute(Value): " + someElement.getAttribute("Value"), true);
-			Reporter.log("Value: " + someElement.getCssValue("p"), true);
 			Reporter.log("Text: " + someElement.getText(), true);
 			someText = someElement.getText();
 			if (someText != null) if (someText.contains("link")) break;
 		}
-		testMailer.addText("Found text:");
+		testMailer.addText("Text search result:");
 		testMailer.addText(someText + " \n");
-		Reporter.log("Found text", logToConsole);
+		Reporter.log("Text search result:", logToConsole);
 		Reporter.log(someText, logToConsole);
 		Assert.assertTrue((someText.contentEquals("We will provide a special registration link" +
 				" for booking in the next couple of weeks.")), 
@@ -139,8 +140,8 @@ public class CheckSeConfVenue {
 
 	@AfterTest(alwaysRun = true)
 	public void cleanupTest() {
-		// Maximize the screen and grab a screen capture
-		selenium.manage().window().maximize();
+		// Grab a screen capture
+		localSSWebDriver.maximizeWindow();
 		File screenshot = localSSWebDriver.getScreenshot();
 
 		// Attach the screen capture to the email

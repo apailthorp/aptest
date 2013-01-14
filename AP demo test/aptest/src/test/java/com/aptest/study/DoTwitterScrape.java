@@ -27,7 +27,8 @@ public class DoTwitterScrape {
 	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-	SpecialSauceWebDriver localSSWebDriver;
+//	SpecialSauceWebDriver localSSWebDriver;
+	LocalSSWebDriverInterface localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();
@@ -69,14 +70,15 @@ public class DoTwitterScrape {
 	}
 
 	@Parameters({ "sauceUsername", "sauceAccessKey", "testName", "build",
-		"notifyEmail", "sendEmail", "url", "userName", "userPassword",
+		"notifyEmail", "sendEmail", "url", "userName",
+		"userPassword", "webDriverType", 
 		"browser", "platform", "browserVersion" })
 	@BeforeTest(alwaysRun = true)
 	public void setUp(String inSauceUserName, String inSauceAccessKey,
 			String inTestName, String inBuild, String inNotifyEmail,
 			String inSendEmail, String inUrl, String inUserName,
-			String inUserPassword, String inBrowser, String inPlatform,
-			String inBrowserVersion) throws Exception {
+			String inUserPassword, String inWebDriverType, 
+			String inBrowser, String inPlatform, String inBrowserVersion) throws Exception {
 
 		// Move local input strings to class level variables
 		testName = inTestName;
@@ -93,7 +95,8 @@ public class DoTwitterScrape {
 				+ targetBrowserVersion + "_" + targetPlatform + ".PNG";
 
 		// Get the RemoteWebDriver with the custom extensions
-		localSSWebDriver = new SpecialSauceWebDriver();
+		Reporter.log("Starting RemoteWebDriver as: " + inWebDriverType, logToConsole);
+		localSSWebDriver = LocalSSWebDriverFactory.getLocalSSWebDriver(inWebDriverType);
 		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
@@ -154,8 +157,7 @@ public class DoTwitterScrape {
 
 	@AfterTest(alwaysRun = true)
 	public void cleanupTest() {
-		// Maximize the screen and grab a screen capture
-		selenium.manage().window().maximize();
+		// Grab a screen capture
 		File screenshot = localSSWebDriver.getScreenshot();
 
 		// Attach the screen capture to the email
