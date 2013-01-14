@@ -2,21 +2,22 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite verbose="2" name="User type suite" parallel="tests"
-	thread-count="7">
+	thread-count="10">
 	<!-- Parameters for all tests -->
 	<listeners>
 		<listener class-name="com.aptest.study.TestEmailReporterSender" />
 	</listeners>
-	<parameter name="sauceUsername" value="fabrictest" />
-	<parameter name="sauceAccessKey" value="accf40c4-7121-4a71-a155-c410c2dd38f3" />
+	<parameter name="sauceUsername" value="XXX" />
+	<parameter name="sauceAccessKey" value="XXX" />
 	<parameter name="testName" value="checkSeConf2013" />
-	<parameter name="build" value="check-1381" />
+	<parameter name="build" value="check-1392" />
 	<parameter name="notifyEmail" value="apailthorp@msn.com" />
 	<parameter name="sendEmail" value="true" />
 	<parameter name="url" value="http://www.seleniumconf.org/venue/" />
 	<test verbose="2"
 		name="Selenium Conference Venue screen scrape using Firefox 19 on Windows"
 		preserve-order="true">
+		<parameter name="webDriverType" value="local" />
 		<parameter name="platform" value="WINDOWS" />
 		<parameter name="browser" value="firefox" />
 		<parameter name="browserVersion" value="19" />
@@ -30,6 +31,7 @@
 		<test verbose="2"
 		name="Selenium Conference Venue screen scrape using IE 9 on Windows"
 		preserve-order="true">
+		<parameter name="webDriverType" value="local" />
 		<parameter name="platform" value="WINDOWS" />
 		<parameter name="browser" value="internet explorer" />
 		<parameter name="browserVersion" value="9" />
@@ -40,12 +42,10 @@
 			</methods>
 		</classes>
 	</test>
-<!-- 	Problem with getText on Chrome: 
-			http://code.google.com/p/selenium/issues/detail?id=2922 -->
-<!-- 
 		<test verbose="2"
 		name="Selenium Conference Venue screen scrape using Chrome on Windows"
 		preserve-order="true">
+		<parameter name="webDriverType" value="local" />
 		<parameter name="platform" value="WINDOWS" />
 		<parameter name="browser" value="chrome" />
 		<parameter name="browserVersion" value="" />
@@ -56,5 +56,102 @@
 			</methods>
 		</classes>
 	</test>
- -->
+	<test verbose="2"
+		name="Test Twitter screen scrape using IE 8 on Windows 2003"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2003" />
+		<parameter name="browser" value="IE" />
+		<parameter name="browserVersion" value="8" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+		<test verbose="2"
+		name="Test Twitter screen scrape using IE 9 on Windows 2008"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2008" />
+		<parameter name="browser" value="IE" />
+		<parameter name="browserVersion" value="9" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+	<test verbose="2"
+		name="Test Twitter screen scrape using IE 10 on Windows 2012"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2012" />
+		<parameter name="browser" value="IE" />
+		<parameter name="browserVersion" value="10" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+	<test verbose="2"
+		name="Test Twitter screen scrape using Firefox 16 on Windows 2003"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2003" />
+		<parameter name="browser" value="firefox" />
+		<parameter name="browserVersion" value="16" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+	<test verbose="2"
+		name="Test Twitter screen scrape using Chrome on Windows 2008"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2008" />
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserVersion" value="" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+ 	<test verbose="2"
+		name="Test Twitter screen scrape using Firefox 17 on Windows 2012"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2012" />
+		<parameter name="browser" value="firefox" />
+		<parameter name="browserVersion" value="17" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
+	<test verbose="2"
+		name="Test Twitter screen scrape using Chrome on Windows 2003"
+		preserve-order="true">
+		<parameter name="webDriverType" value="sauce" />
+		<parameter name="platform" value="Windows 2003" />
+		<parameter name="browser" value="chrome" />
+		<parameter name="browserVersion" value="" />
+		<classes>
+			<class name="com.aptest.study.CheckSeConfVenue" />
+			<methods>
+				<include name="doTest" />
+			</methods>
+		</classes>
+	</test>
  </suite>
