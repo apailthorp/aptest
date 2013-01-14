@@ -36,6 +36,7 @@ public class CheckSeConfVenue {
 	// Available for use after test method has completed
 	public String sauceSessionName;
 	public String testName;
+	public String webDriverType;
 	public String build;
 	public String emailName;
 	public String emailSendFlag;
@@ -81,6 +82,7 @@ public class CheckSeConfVenue {
 
 		// Move local input strings to class level variables
 		testName = inTestName;
+		webDriverType = inWebDriverType;
 		build = inBuild;
 		emailName = inNotifyEmail;
 		url = inUrl;
@@ -93,7 +95,6 @@ public class CheckSeConfVenue {
 
 		// Get the RemoteWebDriver with custom extensions
 		localSSWebDriver = LocalSSWebDriverFactory.getLocalSSWebDriver(inWebDriverType);
-		Reporter.log("Test is running using " + inWebDriverType, logToConsole);
 		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
@@ -108,6 +109,7 @@ public class CheckSeConfVenue {
 
 		// Output some progress, compose email message start
 		Reporter.log("Build: " + build, logToConsole);
+		Reporter.log("Test is running using " + webDriverType, logToConsole);
 		String emailMessage = "starting " + targetDescription + "\n";
 		emailMessage += "Build: " + build + "\n " + targetDescription 
 				+ "\n URL: " + url 
