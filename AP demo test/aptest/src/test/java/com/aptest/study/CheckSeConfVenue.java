@@ -91,8 +91,9 @@ public class CheckSeConfVenue {
 		fileScreenCapture = "Screenshot_" + targetBrowser + "_"
 				+ targetBrowserVersion + "_" + targetPlatform + ".PNG";
 
-		// Get the RemoteWebDriver with the custom extensions
+		// Get the RemoteWebDriver with custom extensions
 		localSSWebDriver = LocalSSWebDriverFactory.getLocalSSWebDriver(inWebDriverType);
+		Reporter.log("Test is running using " + inWebDriverType, logToConsole);
 		// Use it to get a selenium to operate against
 		selenium = localSSWebDriver.getSelenium(inSauceUserName,
 				inSauceAccessKey, inBrowser, inPlatform, inBrowserVersion);
