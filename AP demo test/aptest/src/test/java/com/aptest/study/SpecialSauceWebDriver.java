@@ -17,12 +17,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.saucelabs.saucerest.SauceREST;
 
-public class SpecialSauceWebDriver extends RemoteWebDriver implements LocalSSWebDriverInterface {
+public class SpecialSauceWebDriver
+	implements LocalSSWebDriverInterface {
 	
 	private static String sauceUser;
 	private static String sauceAccessKey;
 	private WebDriver augmentedDriver;
-	private WebDriver driver;
 	private SauceREST sauceWebDriverREST;
 	private Map<String, Object>mapSauceJob = new HashMap<String, Object>();
 	private String sauceJobID;
@@ -38,18 +38,14 @@ public class SpecialSauceWebDriver extends RemoteWebDriver implements LocalSSWeb
 
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc = getCapabilities(browser, browserVersion, platform);
-		dc = getCapabilities(browser, null, platform);
+		augmentedDriver = new Augmenter().augment( new RemoteWebDriver(
+				new URL("http://" +  sauceUser + ":" + sauceAccessKey + "@ondemand.saucelabs.com:80/wd/hub"),dc));
 
-		driver = new RemoteWebDriver(
-				new URL(
-						"http://" +  sauceUser + ":" + sauceAccessKey + "@ondemand.saucelabs.com:80/wd/hub"),
-						dc);
-		augmentedDriver = new Augmenter().augment(driver);
-		
-		sauceJobID = getJobID(driver);
-		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
+		sauceJobID = getJobID(augmentedDriver);
+		augmentedDriver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
 
-		return driver;
+		return augmentedDriver;
+
 
 	}
 
@@ -95,7 +91,6 @@ public class SpecialSauceWebDriver extends RemoteWebDriver implements LocalSSWeb
 	}
 
 	public void setTestName(String name){
-		// Using REST call, set the name of the test and the initial pass status on the Sauce Labs server
 		mapSauceJob.put("name", name);
 		try {
 			sauceWebDriverREST.updateJobInfo(sauceJobID, mapSauceJob);

@@ -12,10 +12,10 @@ import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class LocalSSWebDriver extends RemoteWebDriver implements LocalSSWebDriverInterface {
+public class LocalSSWebDriver 
+	implements LocalSSWebDriverInterface {
 
-	private WebDriver driver;
-	public WebDriver augmentedDriver;
+	private WebDriver augmentedDriver;
 
 	public WebDriver getSelenium(String inSauceUser, String inSauceAccessKey, 
 			String browser, String platform, String browserVersion
@@ -28,16 +28,17 @@ public class LocalSSWebDriver extends RemoteWebDriver implements LocalSSWebDrive
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc = getCapabilities(browser, browserVersion, platform);
 
-		driver = new RemoteWebDriver(
+		augmentedDriver = new RemoteWebDriver(
 				new URL(
 						"http://localhost:4444/wd/hub"),
 						dc);
 
-		augmentedDriver = new Augmenter().augment(driver);
+		augmentedDriver = new Augmenter().augment(new RemoteWebDriver(
+				new URL("http://localhost:4444/wd/hub"),dc));
 
-		driver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
+		augmentedDriver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
 
-		return driver;
+		return augmentedDriver;
 
 	}
 
@@ -100,7 +101,7 @@ public class LocalSSWebDriver extends RemoteWebDriver implements LocalSSWebDrive
 	}
 
 	public void maximizeWindow() {
-		driver.manage().window().maximize();
+		augmentedDriver.manage().window().maximize();
 	}
 
 }
