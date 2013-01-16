@@ -2,7 +2,7 @@ package com.aptest.study;
 
 public class LocalSSWebDriverFactory {
 
-	public static LocalSSWebDriver getLocalSSWebDriver(String selection){
+	public static LocalSSWebDriver<?> getLocalSSWebDriver(String selection){
 		if (selection.equalsIgnoreCase("local")) {
 			return new SpecialLocalWebDriver();
 		}
@@ -11,5 +11,4 @@ public class LocalSSWebDriverFactory {
 		}
 		else throw new RuntimeException("bad LocalSSWebDriver type");
 	}
-
 }

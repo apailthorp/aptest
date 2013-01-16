@@ -16,7 +16,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-//@Listeners({ com.aptest.study.TestMailSender.class})
 public class DoTwitterScrape {
 
 	WebDriver selenium;
@@ -27,9 +26,7 @@ public class DoTwitterScrape {
 	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-//	SpecialSauceWebDriver localSSWebDriver;
-	LocalSSWebDriver localSSWebDriver;
-//	WebDriver localSSWebDriver;
+	LocalSSWebDriver<?> localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();

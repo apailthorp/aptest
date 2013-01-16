@@ -12,7 +12,7 @@ import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class SpecialLocalWebDriver extends LocalSSWebDriver {
+public class SpecialLocalWebDriver extends LocalSSWebDriver<Object> {
 
 	private WebDriver augmentedDriver;
 
@@ -37,48 +37,8 @@ public class SpecialLocalWebDriver extends LocalSSWebDriver {
 				.implicitlyWait(90, TimeUnit.SECONDS);
 
 		return augmentedDriver;
-
 	}
 
-	// public static DesiredCapabilities getCapabilities(String browser, String
-	// browserVersion, String platform){
-	//
-	// DesiredCapabilities capabilities = null;
-	//
-	// if (browser.equalsIgnoreCase("internet explorer") |
-	// (browser.equalsIgnoreCase("ie"))){
-	// capabilities = DesiredCapabilities.internetExplorer();
-	// }
-	// else if (browser.equalsIgnoreCase("chrome")){
-	// capabilities = DesiredCapabilities.chrome();
-	//
-	// }
-	// else if (browser.equalsIgnoreCase("firefox")){
-	// capabilities = DesiredCapabilities.firefox();
-	// }
-	//
-	// else if (browser.equalsIgnoreCase("safari")){
-	// capabilities = DesiredCapabilities.safari();
-	// }
-	//
-	// else if (browser.equalsIgnoreCase("iphone")){
-	// capabilities = DesiredCapabilities.iphone();
-	// }
-	//
-	// if (browserVersion != "" ){
-	// capabilities.setCapability("version", browserVersion);
-	// }
-	//
-	// capabilities.setCapability("platform", platform);
-	//
-	// return capabilities;
-	//
-	// }
-	//
-	// public String getJobID(WebDriver inDriver) {
-	// return ((RemoteWebDriver)inDriver).getSessionId().toString();
-	// }
-	//
 	public void setTestName(String name) {
 		return;
 	}

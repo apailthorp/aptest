@@ -18,7 +18,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.saucelabs.saucerest.SauceREST;
 
 public class SpecialSauceWebDriver
-	extends LocalSSWebDriver {
+	extends LocalSSWebDriver<Object> {
 	
 	private static String sauceUser;
 	private static String sauceAccessKey;
@@ -50,47 +50,10 @@ public class SpecialSauceWebDriver
 
 	}
 
-//	public DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
-//
-//		DesiredCapabilities capabilities = null;
-//
-//		if (browser.equalsIgnoreCase("internet explorer") | (browser.equalsIgnoreCase("ie"))){
-//			capabilities = DesiredCapabilities.internetExplorer();
-//		}
-//		else if (browser.equalsIgnoreCase("chrome")){
-//			capabilities = DesiredCapabilities.chrome();
-//
-//		}
-//		else if (browser.equalsIgnoreCase("firefox")){
-//			capabilities = DesiredCapabilities.firefox();
-//		}
-//
-//		else if (browser.equalsIgnoreCase("safari")){
-//			capabilities = DesiredCapabilities.safari();
-//		}
-//
-//		else if (browser.equalsIgnoreCase("iphone")){
-//			capabilities = DesiredCapabilities.iphone();
-//		}
-//
-//		if (browserVersion != "" ){ 
-//			capabilities.setCapability("version", browserVersion);
-//		}
-//
-//		capabilities.setCapability("platform", platform);
-//
-//		return capabilities;
-//
-//	}
-
 	private SauceREST getSauceREST(String inSauceUserName, String inSauceAccessKey) {
 		return new SauceREST(inSauceUserName, inSauceAccessKey);
 	}
 	
-//	public String getJobID(WebDriver inDriver) {
-//		return ((RemoteWebDriver)inDriver).getSessionId().toString();
-//	}
-//
 	public void setTestName(String name){
 		mapSauceJob.put("name", name);
 		try {

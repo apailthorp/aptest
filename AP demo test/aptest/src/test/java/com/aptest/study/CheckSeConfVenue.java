@@ -28,7 +28,7 @@ public class CheckSeConfVenue {
 	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-	LocalSSWebDriver localSSWebDriver;
+	LocalSSWebDriver<?> localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();
@@ -126,7 +126,7 @@ public class CheckSeConfVenue {
 		for (WebElement someElement : someElements){
 			Reporter.log("Text: " + someElement.getText(), true);
 			someText = someElement.getText();
-			if (someText != null) if (someText.contains("link")) break;
+			if ((someText != null) && (someText.contains("link"))) break;
 		}
 		testMailer.addText("Text search result:");
 		testMailer.addText(someText + " \n");
@@ -138,7 +138,6 @@ public class CheckSeConfVenue {
 		// Testing is done
 		testPassStatus = true;
 		localSSWebDriver.setTestPass();
-
 	}
 
 	@AfterTest(alwaysRun = true)
