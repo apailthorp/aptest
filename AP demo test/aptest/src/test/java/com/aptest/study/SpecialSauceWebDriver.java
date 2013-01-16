@@ -18,7 +18,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.saucelabs.saucerest.SauceREST;
 
 public class SpecialSauceWebDriver
-	implements LocalSSWebDriverInterface {
+	extends LocalSSWebDriver {
 	
 	private static String sauceUser;
 	private static String sauceAccessKey;
@@ -26,6 +26,7 @@ public class SpecialSauceWebDriver
 	private SauceREST sauceWebDriverREST;
 	private Map<String, Object>mapSauceJob = new HashMap<String, Object>();
 	private String sauceJobID;
+	private String urlRemoteWebDriver = "@ondemand.saucelabs.com:80/wd/hub";
 	
 	public WebDriver getSelenium(String inSauceUser, String inSauceAccessKey, 
 			String browser, String platform, String browserVersion
@@ -39,7 +40,7 @@ public class SpecialSauceWebDriver
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc = getCapabilities(browser, browserVersion, platform);
 		augmentedDriver = new Augmenter().augment( new RemoteWebDriver(
-				new URL("http://" +  sauceUser + ":" + sauceAccessKey + "@ondemand.saucelabs.com:80/wd/hub"),dc));
+				new URL("http://" +  sauceUser + ":" + sauceAccessKey + urlRemoteWebDriver),dc));
 
 		sauceJobID = getJobID(augmentedDriver);
 		augmentedDriver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
@@ -49,47 +50,47 @@ public class SpecialSauceWebDriver
 
 	}
 
-	public DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
-
-		DesiredCapabilities capabilities = null;
-
-		if (browser.equalsIgnoreCase("internet explorer") | (browser.equalsIgnoreCase("ie"))){
-			capabilities = DesiredCapabilities.internetExplorer();
-		}
-		else if (browser.equalsIgnoreCase("chrome")){
-			capabilities = DesiredCapabilities.chrome();
-
-		}
-		else if (browser.equalsIgnoreCase("firefox")){
-			capabilities = DesiredCapabilities.firefox();
-		}
-
-		else if (browser.equalsIgnoreCase("safari")){
-			capabilities = DesiredCapabilities.safari();
-		}
-
-		else if (browser.equalsIgnoreCase("iphone")){
-			capabilities = DesiredCapabilities.iphone();
-		}
-
-		if (browserVersion != "" ){ 
-			capabilities.setCapability("version", browserVersion);
-		}
-
-		capabilities.setCapability("platform", platform);
-
-		return capabilities;
-
-	}
+//	public DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
+//
+//		DesiredCapabilities capabilities = null;
+//
+//		if (browser.equalsIgnoreCase("internet explorer") | (browser.equalsIgnoreCase("ie"))){
+//			capabilities = DesiredCapabilities.internetExplorer();
+//		}
+//		else if (browser.equalsIgnoreCase("chrome")){
+//			capabilities = DesiredCapabilities.chrome();
+//
+//		}
+//		else if (browser.equalsIgnoreCase("firefox")){
+//			capabilities = DesiredCapabilities.firefox();
+//		}
+//
+//		else if (browser.equalsIgnoreCase("safari")){
+//			capabilities = DesiredCapabilities.safari();
+//		}
+//
+//		else if (browser.equalsIgnoreCase("iphone")){
+//			capabilities = DesiredCapabilities.iphone();
+//		}
+//
+//		if (browserVersion != "" ){ 
+//			capabilities.setCapability("version", browserVersion);
+//		}
+//
+//		capabilities.setCapability("platform", platform);
+//
+//		return capabilities;
+//
+//	}
 
 	private SauceREST getSauceREST(String inSauceUserName, String inSauceAccessKey) {
 		return new SauceREST(inSauceUserName, inSauceAccessKey);
 	}
 	
-	public String getJobID(WebDriver inDriver) {
-		return ((RemoteWebDriver)inDriver).getSessionId().toString();
-	}
-
+//	public String getJobID(WebDriver inDriver) {
+//		return ((RemoteWebDriver)inDriver).getSessionId().toString();
+//	}
+//
 	public void setTestName(String name){
 		mapSauceJob.put("name", name);
 		try {

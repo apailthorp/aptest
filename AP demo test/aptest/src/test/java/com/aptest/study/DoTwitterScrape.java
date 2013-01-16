@@ -28,7 +28,8 @@ public class DoTwitterScrape {
 
 	// Extended RemoteWebDriver includes some utility methods
 //	SpecialSauceWebDriver localSSWebDriver;
-	LocalSSWebDriverInterface localSSWebDriver;
+	LocalSSWebDriver localSSWebDriver;
+//	WebDriver localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();

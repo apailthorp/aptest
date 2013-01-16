@@ -2,9 +2,9 @@ package com.aptest.study;
 
 public class LocalSSWebDriverFactory {
 
-	public static LocalSSWebDriverInterface getLocalSSWebDriver(String selection){
+	public static LocalSSWebDriver getLocalSSWebDriver(String selection){
 		if (selection.equalsIgnoreCase("local")) {
-			return new LocalSSWebDriver();
+			return new SpecialLocalWebDriver();
 		}
 		else if (selection.equalsIgnoreCase("sauce")) {
 			return new SpecialSauceWebDriver();

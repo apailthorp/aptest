@@ -28,7 +28,7 @@ public class CheckSeConfVenue {
 	static boolean allPassing = true;
 
 	// Extended RemoteWebDriver includes some utility methods
-	LocalSSWebDriverInterface localSSWebDriver;
+	LocalSSWebDriver localSSWebDriver;
 
 	// Utility class for sending email
 	TestMailer testMailer = new TestMailer();

@@ -2,47 +2,17 @@ package com.aptest.study;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-public class LocalSSWebDriver 
-	implements LocalSSWebDriverInterface {
+public abstract class LocalSSWebDriver<augmentedDriver> {
 
-	private WebDriver augmentedDriver;
-
-	public WebDriver getSelenium(String inSauceUser, String inSauceAccessKey, 
-			String browser, String platform, String browserVersion
-			)
-					throws InterruptedException, MalformedURLException {
-
-		File fileIe = new File("C:\\Program Files\\Selenium\\IEDriverServer.exe");
-		System.setProperty("webdriver.ie.driver", fileIe.getAbsolutePath());
-		
-		DesiredCapabilities dc = new DesiredCapabilities();
-		dc = getCapabilities(browser, browserVersion, platform);
-
-		augmentedDriver = new RemoteWebDriver(
-				new URL(
-						"http://localhost:4444/wd/hub"),
-						dc);
-
-		augmentedDriver = new Augmenter().augment(new RemoteWebDriver(
-				new URL("http://localhost:4444/wd/hub"),dc));
-
-		augmentedDriver.manage().timeouts().implicitlyWait(90, TimeUnit.SECONDS);
-
-		return augmentedDriver;
-
-	}
-
-	public static DesiredCapabilities getCapabilities(String browser, String browserVersion, String platform){
+	public static DesiredCapabilities getCapabilities(String browser, 
+			String browserVersion, String platform){
 
 		DesiredCapabilities capabilities = null;
 
@@ -75,33 +45,25 @@ public class LocalSSWebDriver
 
 	}
 
-	public String getJobID(WebDriver inDriver) {
+	public static String getJobID(WebDriver inDriver) {
 		return ((RemoteWebDriver)inDriver).getSessionId().toString();
 	}
 
-	public void setTestName(String name){
-		return;
-	}
+	public abstract WebDriver getSelenium(String inSauceUser,
+			String inSauceAccessKey, String browser, String platform,
+			String browserVersion) throws InterruptedException,
+			MalformedURLException;
 
-	public void setBuild(String inBuild){
-		return;
-	}
+	public abstract void setTestName(String name);
 
-	public void setTestPass(){
-		return;
-	}
+	public abstract void setBuild(String inBuild);
 
-	public void setTestFail(){
-		return;
-	}
+	public abstract void setTestPass();
 
-	public File getScreenshot(){
-		return ((TakesScreenshot)augmentedDriver).
-				getScreenshotAs(OutputType.FILE);
-	}
+	public abstract void setTestFail();
 
-	public void maximizeWindow() {
-		augmentedDriver.manage().window().maximize();
-	}
+	public abstract File getScreenshot();
+	
+	public abstract void maximizeWindow();
 
 }
