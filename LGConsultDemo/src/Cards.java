@@ -79,14 +79,17 @@ public class Cards {
 		}
 	}
 	
-	public static void shuffler2(String[] inDeck){
+	/* Alternate shuffler that avoids imported RNG code  */
+	public static void shuffler_simple(String[] inDeck){
 		
 		/* iterate through all elements of the array (stack of decks) */
 		for (int i=0; i<inDeck.length; i++){
-			/* Randomly select a position following the current iterated card */
+			/* Randomly select a position following the current iterated card
+			 * - to make a pseudo random selection, iterate forward looping until the clock changes
+			 * This results in a select that should vary largely randomly */
 			long startTime = System.currentTimeMillis();
 			int psuedoRandomPosition = 0;
-			long iterations = 0;
+			long iterations = 0; // count total iterations before the clock changes
 			while (System.currentTimeMillis()==startTime){
 				psuedoRandomPosition = (++psuedoRandomPosition%(inDeck.length - i));
 				iterations++;

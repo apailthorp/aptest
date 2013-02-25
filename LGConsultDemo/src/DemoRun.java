@@ -17,7 +17,7 @@ public class DemoRun {
 		 * is low. Generation of any values outside of expected range will
 		 * cause an exception, which was not observed.
 		 */
-		int[] someTests = new int[1000];
+		int[] someTests = new int[10];
 		/* initialize all test values as 0 */
 		for (int i=0; i<someTests.length; i++) someTests[i] = 0;
 
@@ -60,7 +60,7 @@ public class DemoRun {
 		/* Shuffle the deck */
 		timeStart = System.currentTimeMillis();
 		System.out.println(String.format("Time (ms) at beginning of shuffle: %s", timeStart));
-		Cards.shuffler2(fiveDeckStack);
+		Cards.shuffler_simple(fiveDeckStack);
 		timeEnd = System.currentTimeMillis();
 		duration = timeEnd - timeStart;
 		System.out.println(String.format("After shuffle: %s, duration is %s to nearest ms", timeEnd, duration));
